@@ -39,10 +39,11 @@ simple web api to delegate sending sms on a <b>linux server</b> that owns a sim 
 <li>smsapi.css : the style file for test.php</li>
 <li>index.php : the root api php file (I suggest you to user another name)</li>
 <li>robots.txt : a file to prevent search indexing</li>
-<li>A log folder, it must be web server writable : you will find log files here</li>
-<li>A tmp folder for temporary files, it must be web server writable</li>
+<li>A log folder, it must be web server writable : you will find log files here.I recommend to put an htaccess file here to prevent direct downloading.</li>
+<li>A tmp folder for temporary files, it must be web server writable.I recommend to put an htaccess file here to prevent direct downloading.</li>
 <li>A db folder, it must be web server writable. It contains smsapi.db file (the sqlite database) that must be web server writable</li>
-<li>In db folder <b>you have to put a .htaccess file to prevent direct download of database !</b><br>Use someting like this :<Files "smsapi.db">Require all denied</Files></li>
+<li>In db folder <b>you have to put a .htaccess file to prevent direct download of database !</b><br>Use someting like this :<br><br>
+  <blockquote>&lt;Files 'smsapi.db'&gt;Require all denied&lt;/Files&gt;</blockquote>blockquote></li>
 <li>A service folder that contains what is needed to send SMS :
   <ul>
     <li>.gammurc is a file used by gammu (the sms binary file). You have to check the line "port = /dev/ttyUSB0" is your Sim card USB adaptatrer is in another port, and "connection = at19200" if your adaptater is using another dial speed </li>
