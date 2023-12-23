@@ -1,0 +1,10 @@
+[Unit]
+Description=Mettre le code pin de la cle 3G au boot
+After=network-online.target
+[Service]
+Type=idle
+ExecStart=sh /opt/gammu/pincode.sh
+User=root
+Group=root
+[Install]
+WantedBy=multi-user.target
