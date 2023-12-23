@@ -54,21 +54,65 @@ simple web api to delegate sending sms on a <b>linux server</b> that owns a sim 
   </ul>
 </li>
 </ul>
-<br><br>
+
 # Installation :
-I'm using Redhat Linux server that uses dnf package manager. Replace dnf with apt if you are using a Debian based Linux server<br><br>
-I'm using apache web server replace with nginx ou lighttp if you use another one<br><br>
-I'm using php-fpm service, ignore if you do not<br><br>
-Use virtualhosting and cert bot SSL certificate if you want<br><br>
+Assuming you have a web service that is running<br>
+Assuming you have installed gammu<br>
+If gammu needs your pin code at each boot (you can check it with <b>gammu getsecuritystatus</b>), you can use my pincode.sh and pîncode.service files to do it.<br>
+Assuming that gamm can send SMS by cli<br>
+Check it with <b>gammu sendsms TEXT aphonenumber -text "Test by CLI"</b><br>
+<br>
+If you need some gammu config file, define it in index.php like this<br>
+<b>DEFINE("GAMMU_CONFIG_FILE","/root/.gammurc");</b> or <b>DEFINE("GAMMU_CONFIG_FILE","");</b><br>
+<br>
+Put all the content repo in a document root web server folder (or subfolder)<br>
+make ./log, ./tmp and ./db/smsdb.db writable by your web server 
+<br>
+Open ./db/smsdb.db with sqlite and create or choose password for the demo account (see TBPARAM).<br>
+Check TBQUOTAT for this useror insert a row in TBQUOTAT to make your new user own some SMS to send.<br>
+<br>
+Go to a web navigator and ask for index.php, you will see : 403 (Forbidden)<br>
+<br>
+Open test.php, search at the beginning of the file for : <b>$smspassw=GetVariableFrom($_POST,"smspassw","demopass");</b> and replace <b>demopass</b> by your demo password if you changed it in TBPARAM.<br>
+in index.php search for <b>filterlist</b> function, because the script only accept French phone number, you will have to change the rules if you leave in another country.
+<br>
+Go to a web navigator and ask for test.php you will see a test page, here chose a client, put the from phone numer (SIM Card phone number), give one or more recipients, and a message to send.<br>
+Chose directsend<br>
+<br>
+You have received this SMS ? Yeah, next one how to use this api programmaticaly.<br>
+
+# How to use this api programmaticaly
+See in test.php the action listbox :<br>
+You can :
 <ul>
-  <li>dnf install httpd mod_ssl -y</li>
-  <li>systemctl enable apache && systemctl start apache</li>
-  <li>firewall-cmd --permanent --add-service=http && firewall-cmd --reload</li>
-  <li>dnf install php php-pdo sqlite -y</li>
-  <li>systemctl enable php-fpm && systemctl start php-fpm</li>
+  <li>new : create a new SMS without sending : you have to give the from number (SIM Card phone Number) , the message body, the accound and his password. It will return a SMS Id</li>
+  <li>putcc : remplace or put recipients in an existing SMS (you will have to give the SMS Id, the accound and his password)</li>
+  <li>getquotat : giving the accound and his password. It will return, how much SMS this account can send</li>
+  <li>directsend : create and send a new SMS : you have to give the from number (SIM Card phone Number) , the message body, a recipient, the accound and his password. It will return the SMS Id</li>
+  <li>send : send a SMS previously fully created : you have to give ths SMS Id ,the accound and his password.</li>
 </ul>
 
+# Calling api
+Use curl, python requests library, javascript fetch or whatever you want.
+You have to call the <b>index.php</b> script using <b>POST</b>
+You have to give these POST values :
+<ul>
+  <li><b>smscli</b> : this is the string id of the account that want to send a message (ex : demo)</li>
+  <li><b>smspassw</b> : this is the string password of the account that want to send a message (ex : demopass)</li>
+  <li><b>from</b> : The SIM card phone number </li>
+  <li><b>body</b> : The message (use UTF-8 !)</li>
+  <li><b>action</b> : The action to do (new, putcc, getquotat, directsend or send).</li>
+  <li><b>idsms</b> : The smsid if you want to update or send a message that you have only created.</li>
+  <li><b>cclist</b> : Recipients list, using semi-colon separator.</li>
+</ul>
 
+# Returning values
+This api will return you infomations for debugging and check what has been done.
+Theses informations are in XML format and UTF-8 encoded. You will find :
+<ul>
+  <li><b>CR</b> : The return code : 0 If everything is OK</li>
+  <li><b>MSG</b> : A message if something went wrong</li>
+  <li><b>DATA</b> : Some data if neccessary, it can be <b>idsms</b> or <b>quotatleft</b></li>
+<ul>
 
-
-
+# Enjoy !
