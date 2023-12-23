@@ -107,12 +107,11 @@ You have to give these POST values :
 </ul>
 
 # Returning values
-This api will return you infomations for debugging and check what has been done.
-Theses informations are in XML format and UTF-8 encoded. You will find :
+This api will return you infomations for debugging and check what has been done.<br>
+Theses informations are in XML format and UTF-8 encoded. You will find :<br>
 <ul>
   <li><b>CR</b> : The return code : 0 If everything is OK</li>
   <li><b>MSG</b> : A message if something went wrong</li>
   <li><b>DATA</b> : Some data if neccessary, it can be <b>idsms</b> or <b>quotatleft</b></li>
 <ul>
 
-# Enjoy !
