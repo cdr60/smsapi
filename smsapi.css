@@ -1,0 +1,23 @@
+body
+{
+	background-color:rgb(61,66,70);
+	margin: 10px;
+	font-size:12pt;
+}
+
+.flex-zone
+{
+	display: flex;
+	margin: 10px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.flex-item 
+{
+	max-width: 600px;
+	position:relative;
+	color: rgb(255,255,255,1);
+	margin-left:10px;
+	margin-right:10px;
+}
