@@ -46,7 +46,7 @@ simple web api to delegate sending sms on a <b>linux server</b> that owns a sim 
   <blockquote>&lt;Files 'smsapi.db'&gt;Require all denied&lt;/Files&gt;</blockquote>blockquote></li>
 <li>A service folder that contains what is needed to send SMS :
   <ul>
-    <li>.gammurc is a file used by gammu (the sms binary file). You have to check the line "port = /dev/ttyUSB0" is your Sim card USB adaptatrer is in another port, and "connection = at19200" if your adaptater is using another dial speed </li>
+    <li>.gammurc is a file used by gammu (the sms binary file). You have to check the line "port = /dev/ttyUSB0" is your Sim card USB adaptater is in another port, and "connection = at19200" if your adaptater is using another dial speed </li>
     <li>group.txt : A CLI example to add your web serveur user to dialout group : beacause the web server must access to the com port. This exemple is for apache 2.4 on Fedora. Check you web server account, it can be www-data on Debian.</li>
     <li>usbmodeswitch.conf : This is my usbmodeswitch configuration file : I'm using a Huawei USB Sim Card adaptater : check what configuration you need.</li>
     <li>pincode.sh : this script must be run at boot time : It will unlock Sim card's protection using your PIN Code : replace your pincode at line "pincode='0000'"</li>
@@ -54,6 +54,20 @@ simple web api to delegate sending sms on a <b>linux server</b> that owns a sim 
   </ul>
 </li>
 </ul>
+<br><br>
+# Installation :
+I'm using Redhat Linux server that uses dnf package manager. Replace dnf with apt if you are using a Debian based Linux server<br><br>
+I'm using apache web server replace with nginx ou lighttp if you use another one<br><br>
+I'm using php-fpm service, ignore if you do not<br><br>
+Use virtualhosting and cert bot SSL certificate if you want<br><br>
+<ul>
+  <li>dnf install httpd mod_ssl -y</li>
+  <li>systemctl enable apache && systemctl start apache</li>
+  <li>firewall-cmd --permanent --add-service=http && firewall-cmd --reload</li>
+  <li>dnf install php php-pdo sqlite -y</li>
+  <li>systemctl enable php-fpm && systemctl start php-fpm</li>
+</ul>
+
 
 
 
